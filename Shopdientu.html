@@ -3,501 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniConnect - Mạng Xã Hội Sinh Viên</title>
+    <title>E-Shop Admin | Modern Glassmorphism</title>
     <style>
-        /* CSS Cơ Bản và Reset */
-        * {
+        /* --- THIẾT LẬP NỀN GRADIENT ĐỘNG --- */
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #1e1b4b);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            height: 100vh;
+            color: #f8fafc;
+            overflow: hidden;
         }
 
-        body {
-            background-color: #f0f2f5;
-            color: #1c1e21;
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        /* Thanh Điều Hướng (Navbar) */
-        header {
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        /* --- SIDEBAR (MENU KÍNH) --- */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.05); /* Rất trong suốt */
+            backdrop-filter: blur(20px); /* HIỆU ỨNG BLUR CỰC MẠNH */
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
         }
 
-        .navbar {
+        .sidebar h2 {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #2dd4bf, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar ul li {
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            border: 1px solid transparent;
+            color: #94a3b8;
+        }
+
+        .sidebar ul li:hover, .sidebar ul li.active {
+            background: rgba(45, 212, 191, 0.1);
+            color: #fff;
+            border: 1px solid rgba(45, 212, 191, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(5px);
+        }
+
+        /* --- NỘI DUNG CHÍNH --- */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Trang trí các đốm sáng blur lơ lửng */
+        .blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(45, 212, 191, 0.2);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+            animation: move 10s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(0, 0); }
+            to { transform: translate(100px, 100px); }
+        }
+
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
+            margin-bottom: 40px;
+        }
+
+        .header h1 { font-size: 2rem; font-weight: 700; margin: 0; }
+
+        /* --- BẢNG DỮ LIỆU --- */
+        .table-container {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            padding: 20px;
+            color: #2dd4bf;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        td {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.95rem;
+            color: #cbd5e1;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+            color: #fff;
+        }
+
+        /* --- NÚT BẤM (GLOSSY BUTTONS) --- */
+        .btn {
             padding: 10px 20px;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1877f2;
-            text-decoration: none;
-        }
-
-        .search-bar {
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: 1px solid #ccc;
-            width: 250px;
-            outline: none;
-            background-color: #f0f2f5;
-        }
-
-        .user-profile img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        /* Bố Cục Chính (Main Layout) */
-        .container {
-            display: flex;
-            max-width: 1200px;
-            margin: 20px auto;
-            gap: 20px;
-            padding: 0 20px;
-        }
-
-        /* Cột Trái (Sidebar) & Cột Phải (Right Panel) */
-        .sidebar, .right-panel {
-            width: 25%;
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            .sidebar, .right-panel {
-                display: block;
-            }
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .menu-item:hover {
-            background-color: #e4e6eb;
-        }
-
-        .menu-item span {
-            margin-right: 10px;
-            font-size: 20px;
-        }
-
-        /* Cột Giữa (Bảng Tin - Feed) */
-        .feed {
-            width: 100%;
-        }
-
-        @media (min-width: 768px) {
-            .feed {
-                width: 50%;
-            }
-        }
-
-        /* Hộp Đăng Bài (Post Creator) */
-        .post-creator {
-            background: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .post-creator-top {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .post-creator-top img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-        }
-
-        .post-creator textarea {
-            width: 100%;
+            border-radius: 12px;
             border: none;
-            outline: none;
-            resize: none;
-            background-color: #f0f2f5;
-            padding: 10px;
-            border-radius: 20px;
-            font-size: 15px;
-        }
-
-        .post-creator button {
-            width: 100%;
-            padding: 10px;
-            background-color: #1877f2;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.2s;
-        }
-
-        .post-creator button:hover {
-            background-color: #166fe5;
-        }
-
-        /* Bài Viết (Post) */
-        .post {
-            background: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .post-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .post-header img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-        }
-
-        .post-author {
-            font-weight: bold;
-            color: #050505;
-        }
-
-        .post-time {
-            font-size: 12px;
-            color: #65676b;
-        }
-
-        .post-content {
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        .post-actions {
-            display: flex;
-            border-top: 1px solid #ced0d4;
-            padding-top: 10px;
-        }
-
-        .action-btn {
-            flex: 1;
-            text-align: center;
-            padding: 8px;
-            cursor: pointer;
-            color: #65676b;
             font-weight: 600;
-            border-radius: 4px;
-            user-select: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.85rem;
         }
 
-        .action-btn:hover {
-            background-color: #f0f2f5;
-        }
+        .btn:active { transform: scale(0.95); }
 
-        /* Khu vực bình luận */
-        .comment-section {
-            display: none; /* Ẩn mặc định */
-            border-top: 1px solid #ced0d4;
-            margin-top: 10px;
-            padding-top: 15px;
-        }
-
-        .comment-item {
-            background-color: #f0f2f5;
-            padding: 8px 12px;
-            border-radius: 15px;
-            margin-bottom: 10px;
-            font-size: 14px;
-            display: inline-block;
-            width: 100%;
-        }
-
-        .comment-input-area {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .comment-input-area input {
-            flex: 1;
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: 1px solid #ccc;
-            outline: none;
-            background-color: #f0f2f5;
-        }
-
-        .comment-input-area button {
-            background-color: #1877f2;
+        .btn-add {
+            background: linear-gradient(135deg, #2dd4bf, #0d9488);
             color: white;
-            border: none;
-            padding: 0 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 15px -3px rgba(45, 212, 191, 0.3);
         }
 
-        /* Danh sách bạn bè */
-        .friend-list h4 {
-            color: #65676b;
-            margin-bottom: 15px;
+        .btn-add:hover { box-shadow: 0 0 20px rgba(45, 212, 191, 0.6); }
+
+        .btn-edit {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            margin-right: 8px;
         }
 
-        .friend {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            cursor: pointer;
+        .btn-edit:hover { background: #f59e0b; color: #fff; }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
-        .friend img {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-        }
-        
-        .online-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #31a24c;
-            border-radius: 50%;
-            display: inline-block;
-        }
+        .btn-delete:hover { background: #ef4444; color: #fff; }
+
+        /* Scrollbar đẹp hơn */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="navbar">
-            <a href="#" class="logo">UniConnect</a>
-            <input type="text" class="search-bar" placeholder="Tìm kiếm sinh viên, nhóm...">
-            <div class="user-profile">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student" alt="User Avatar">
-            </div>
+    <div class="blob"></div>
+
+    <div class="sidebar">
+        <h2>E-SHOP CORE</h2>
+        <ul>
+            <li>📊 Dashboard</li>
+            <li class="active">📱 Quản lý sản phẩm</li>
+            <li>🛒 Đơn đặt hàng</li>
+            <li>👥 Khách hàng</li>
+            <li>⚙️ Cấu hình</li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Sản phẩm hiện có</h1>
+            <div style="font-size: 0.9rem; opacity: 0.7;">Chế độ: <b>Administrator</b></div>
         </div>
-    </header>
 
-    <main class="container">
-        
-        <aside class="sidebar">
-            <div class="menu-item"><span>🎓</span> Khoa CNTT</div>
-            <div class="menu-item"><span>📚</span> Tài liệu học tập</div>
-            <div class="menu-item"><span>🎸</span> CLB Nghệ Thuật</div>
-            <div class="menu-item"><span>📅</span> Lịch Thi / Sự Kiện</div>
-            <div class="menu-item"><span>💬</span> Diễn đàn ẩn danh</div>
-        </aside>
+        <button class="btn btn-add" id="btn-add">+ Thêm mặt hàng</button>
 
-        <section class="feed">
-            
-            <div class="post-creator">
-                <div class="post-creator-top">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student" alt="Avatar">
-                    <textarea id="postInput" rows="2" placeholder="Bạn đang nghĩ gì về môn học hôm nay?"></textarea>
-                </div>
-                <button onclick="createPost()">Đăng Bài</button>
-            </div>
-
-            <div id="postsContainer">
-                
-                <div class="post">
-                    <div class="post-header">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lan" alt="Avatar">
-                        <div>
-                            <div class="post-author">Nguyễn Hoàng Lan</div>
-                            <div class="post-time">2 giờ trước • 🌍</div>
-                        </div>
-                    </div>
-                    <div class="post-content">
-                        Có ai còn giữ tài liệu ôn thi môn Cấu trúc dữ liệu và giải thuật không ạ? Tuần sau thi rồi mà mình mông lung quá 😭
-                    </div>
-                    <div class="post-actions">
-                        <div class="action-btn like-btn">👍 Thích</div>
-                        <div class="action-btn comment-btn">💬 Bình luận</div>
-                        <div class="action-btn share-btn">🔗 Chia sẻ</div>
-                    </div>
-                    <!-- Khu vực bình luận -->
-                    <div class="comment-section">
-                        <div class="comments-list">
-                            <div class="comment-item"><strong>Thầy Giáo:</strong> Lên thư viện mượn giáo trình em nhé!</div>
-                        </div>
-                        <div class="comment-input-area">
-                            <input type="text" class="comment-input" placeholder="Viết bình luận...">
-                            <button class="submit-comment">Gửi</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="post">
-                    <div class="post-header">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Minh" alt="Avatar">
-                        <div>
-                            <div class="post-author">Trần Văn Minh</div>
-                            <div class="post-time">5 giờ trước • Khoa CNTT</div>
-                        </div>
-                    </div>
-                    <div class="post-content">
-                        Vừa thuyết trình xong môn Kỹ năng mềm, nhẹ cả người. Nhóm 3 đi ăn lẩu thôi!!! 🍲🔥
-                    </div>
-                    <div class="post-actions">
-                        <div class="action-btn like-btn">👍 Thích</div>
-                        <div class="action-btn comment-btn">💬 Bình luận</div>
-                        <div class="action-btn share-btn">🔗 Chia sẻ</div>
-                    </div>
-                    <!-- Khu vực bình luận -->
-                    <div class="comment-section">
-                        <div class="comments-list"></div>
-                        <div class="comment-input-area">
-                            <input type="text" class="comment-input" placeholder="Viết bình luận...">
-                            <button class="submit-comment">Gửi</button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <aside class="right-panel">
-            <div class="friend-list">
-                <h4>Người liên hệ <span class="online-dot"></span></h4>
-                <div class="friend">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Tuan" alt="Avatar">
-                    <span>Lê Anh Tuấn</span>
-                </div>
-                <div class="friend">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Hoa" alt="Avatar">
-                    <span>Phạm Thị Hoa</span>
-                </div>
-            </div>
-        </aside>
-
-    </main>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã SP</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Danh mục</th>
+                        <th>Giá bán</th>
+                        <th>Tồn kho</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="product-list">
+                    <tr>
+                        <td>SP001</td>
+                        <td>Google Pixel 6 Pro</td>
+                        <td>Điện thoại</td>
+                        <td>9.200.000 đ</td>
+                        <td>12</td>
+                        <td>
+                            <button class="btn btn-edit">Sửa</button>
+                            <button class="btn btn-delete">Xóa</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SP002</td>
+                        <td>Oppo Reno 8 5G</td>
+                        <td>Điện thoại</td>
+                        <td>7.500.000 đ</td>
+                        <td>18</td>
+                        <td>
+                            <button class="btn btn-edit">Sửa</button>
+                            <button class="btn btn-delete">Xóa</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>SP003</td>
+                        <td>Mạch ESP32-WROOM</td>
+                        <td>Linh kiện</td>
+                        <td>120.000 đ</td>
+                        <td>50</td>
+                        <td>
+                            <button class="btn btn-edit">Sửa</button>
+                            <button class="btn btn-delete">Xóa</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <script>
-        // Hàm Đăng Bài Mới
-        function createPost() {
-            const inputField = document.getElementById('postInput');
-            const content = inputField.value.trim();
+        const productList = document.getElementById('product-list');
+        const btnAdd = document.getElementById('btn-add');
 
-            if (content === "") {
-                alert("Vui lòng nhập nội dung trước khi đăng!");
-                return;
+        // Bắt sự kiện Xóa và Sửa
+        productList.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-delete')) {
+                if (confirm('Bạn muốn gỡ bỏ sản phẩm này?')) {
+                    e.target.closest('tr').remove();
+                }
             }
-
-            const newPostHTML = `
-                <div class="post">
-                    <div class="post-header">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student" alt="Avatar">
-                        <div>
-                            <div class="post-author">Sinh Viên (Bạn)</div>
-                            <div class="post-time">Vừa xong • 🌍</div>
-                        </div>
-                    </div>
-                    <div class="post-content">
-                        ${content}
-                    </div>
-                    <div class="post-actions">
-                        <div class="action-btn like-btn">👍 Thích</div>
-                        <div class="action-btn comment-btn">💬 Bình luận</div>
-                        <div class="action-btn share-btn">🔗 Chia sẻ</div>
-                    </div>
-                    <div class="comment-section">
-                        <div class="comments-list"></div>
-                        <div class="comment-input-area">
-                            <input type="text" class="comment-input" placeholder="Viết bình luận...">
-                            <button class="submit-comment">Gửi</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            const postsContainer = document.getElementById('postsContainer');
-            postsContainer.insertAdjacentHTML('afterbegin', newPostHTML);
-            inputField.value = "";
-        }
-
-        // Ủy quyền sự kiện (Event Delegation) cho toàn bộ Bảng tin
-        // Bằng cách này, các bài viết mới đăng cũng sẽ có chức năng của các nút
-        document.getElementById('postsContainer').addEventListener('click', function(e) {
             
-            // 1. Chức năng Nút Thích
-            if (e.target.closest('.like-btn')) {
-                const btn = e.target.closest('.like-btn');
-                if (btn.style.color === 'rgb(24, 119, 242)') {
-                    btn.style.color = '#65676b';
-                    btn.innerHTML = '👍 Thích';
-                } else {
-                    btn.style.color = '#1877f2';
-                    btn.innerHTML = '💙 Đã thích';
-                }
-            }
+            if (e.target.classList.contains('btn-edit')) {
+                let row = e.target.closest('tr');
+                let newName = prompt('Tên sản phẩm mới:', row.cells[1].innerText);
+                let newPrice = prompt('Giá bán mới:', row.cells[3].innerText);
 
-            // 2. Chức năng Nút Bình Luận (Mở/Đóng khu vực bình luận)
-            if (e.target.closest('.comment-btn')) {
-                const post = e.target.closest('.post');
-                const commentSection = post.querySelector('.comment-section');
-                if (commentSection.style.display === 'block') {
-                    commentSection.style.display = 'none';
-                } else {
-                    commentSection.style.display = 'block';
-                    // Tự động focus vào ô nhập
-                    post.querySelector('.comment-input').focus();
-                }
-            }
-
-            // 3. Chức năng Nút Chia Sẻ
-            if (e.target.closest('.share-btn')) {
-                alert("Đã sao chép liên kết! Bạn có thể gửi cho bạn bè.");
-            }
-
-            // 4. Chức năng Gửi Bình Luận
-            if (e.target.closest('.submit-comment')) {
-                const post = e.target.closest('.post');
-                const input = post.querySelector('.comment-input');
-                const commentText = input.value.trim();
-
-                if (commentText !== "") {
-                    const commentsList = post.querySelector('.comments-list');
-                    const newComment = document.createElement('div');
-                    newComment.className = 'comment-item';
-                    newComment.innerHTML = `<strong>Bạn:</strong> ${commentText}`;
-                    
-                    commentsList.appendChild(newComment);
-                    input.value = ""; // Xóa ô nhập sau khi gửi
-                }
+                if (newName) row.cells[1].innerText = newName;
+                if (newPrice) row.cells[3].innerText = newPrice;
             }
         });
 
-        // Hỗ trợ ấn phím Enter để gửi bình luận
-        document.getElementById('postsContainer').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && e.target.classList.contains('comment-input')) {
-                // Tái sử dụng nút Gửi bằng cách mô phỏng cú click
-                e.target.nextElementSibling.click();
-            }
+        // Bắt sự kiện Thêm
+        btnAdd.addEventListener('click', function() {
+            let id = prompt('Nhập mã SP:');
+            if (!id) return;
+            let name = prompt('Nhập tên SP:');
+            let category = prompt('Nhập danh mục:');
+            let price = prompt('Nhập giá:');
+            let stock = prompt('Nhập số lượng:');
+
+            let row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${id}</td>
+                <td>${name}</td>
+                <td>${category}</td>
+                <td>${price}</td>
+                <td>${stock}</td>
+                <td>
+                    <button class="btn btn-edit">Sửa</button>
+                    <button class="btn btn-delete">Xóa</button>
+                </td>
+            `;
+            productList.appendChild(row);
         });
     </script>
 </body>
