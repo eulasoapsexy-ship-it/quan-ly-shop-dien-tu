@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniConnect - Mạng Xã Hội Sinh Viên</title>
+    <style>
+        /* CSS Cơ Bản và Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #1c1e21;
+        }
+
+        /* Thanh Điều Hướng (Navbar) */
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1877f2;
+            text-decoration: none;
+        }
+
+        .search-bar {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            width: 250px;
+            outline: none;
+            background-color: #f0f2f5;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Bố Cục Chính (Main Layout) */
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        /* Cột Trái (Sidebar) & Cột Phải (Right Panel) */
+        .sidebar, .right-panel {
+            width: 25%;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .sidebar, .right-panel {
+                display: block;
+            }
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .menu-item:hover {
+            background-color: #e4e6eb;
+        }
+
+        .menu-item span {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        /* Cột Giữa (Bảng Tin - Feed) */
+        .feed {
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .feed {
+                width: 50%;
+            }
+        }
+
+        /* Hộp Đăng Bài (Post Creator) */
+        .post-creator {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .post-creator-top {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .post-creator-top img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .post-creator textarea {
+            width: 100%;
+            border: none;
+            outline: none;
+            resize: none;
+            background-color: #f0f2f5;
+            padding: 10px;
+            border-radius: 20px;
+            font-size: 15px;
+        }
+
+        .post-creator button {
+            width: 100%;
+            padding: 10px;
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.2s;
+        }
+
+        .post-creator button:hover {
+            background-color: #166fe5;
+        }
+
+        /* Bài Viết (Post) */
+        .post {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .post-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .post-author {
+            font-weight: bold;
+            color: #050505;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: #65676b;
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .post-actions {
+            display: flex;
+            border-top: 1px solid #ced0d4;
+            padding-top: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            cursor: pointer;
+            color: #65676b;
+            font-weight: 600;
+            border-radius: 4px;
+            user-select: none;
+        }
+
+        .action-btn:hover {
+            background-color: #f0f2f5;
+        }
+
+        /* Khu vực bình luận */
+        .comment-section {
+            display: none; /* Ẩn mặc định */
+            border-top: 1px solid #ced0d4;
+            margin-top: 10px;
+            padding-top: 15px;
+        }
+
+        .comment-item {
+            background-color: #f0f2f5;
+            padding: 8px 12px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .comment-input-area {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .comment-input-area input {
+            flex: 1;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            outline: none;
+            background-color: #f0f2f5;
+        }
+
+        .comment-input-area button {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            padding: 0 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Danh sách bạn bè */
+        .friend-list h4 {
+            color: #65676b;
+            margin-bottom: 15px;
+        }
+
+        .friend {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .friend img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+        }
+        
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #31a24c;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="navbar">
+            <a href="#" class="logo">UniConnect</a>
+            <input type="text" class="search-bar" placeholder="Tìm kiếm sinh viên, nhóm...">
+            <div class="user-profile">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student" alt="User Avatar">
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <aside class="sidebar">
+            <div class="menu-item"><span>🎓</span> Khoa CNTT</div>
+            <div class="menu-item"><span>📚</span> Tài liệu học tập</div>
+            <div class="menu-item"><span>🎸</span> CLB Nghệ Thuật</div>
+            <div class="menu-item"><span>📅</span> Lịch Thi / Sự Kiện</div>
+            <div class="menu-item"><span>💬</span> Diễn đàn ẩn danh</div>
+        </aside>
+
+        <section class="feed">
+            
+            <div class="post-creator">
+                <div class="post-creator-top">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student" alt="Avatar">
+                    <textarea id="postInput" rows="2" placeholder="Bạn đang nghĩ gì về môn học hôm nay?"></textarea>
+                </div>
+                <button onclick="createPost()">Đăng Bài</button>
+            </div>
+
+            <div id="postsContainer">
+                
+                <div class="post">
+                    <div class="post-header">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lan" alt="Avatar">
+                        <div>
+                            <div class="post-author">Nguyễn Hoàng Lan</div>
+                            <div class="post-time">2 giờ trước • 🌍</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        Có ai còn giữ tài liệu ôn thi môn Cấu trúc dữ liệu và giải thuật không ạ? Tuần sau thi rồi mà mình mông lung quá 😭
+                    </div>
+                    <div class="post-actions">
+                        <div class="action-btn like-btn">👍 Thích</div>
+                        <div class="action-btn comment-btn">💬 Bình luận</div>
+                        <div class="action-btn share-btn">🔗 Chia sẻ</div>
+                    </div>
+                    <!-- Khu vực bình luận -->
+                    <div class="comment-section">
+                        <div class="comments-list">
+                            <div class="comment-item"><strong>Thầy Giáo:</strong> Lên thư viện mượn giáo trình em nhé!</div>
+                        </div>
+                        <div class="comment-input-area">
+                            <input type="text" class="comment-input" placeholder="Viết bình luận...">
+                            <button class="submit-comment">Gửi</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="post">
+                    <div class="post-header">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Minh" alt="Avatar">
+                        <div>
+                            <div class="post-author">Trần Văn Minh</div>
+                            <div class="post-time">5 giờ trước • Khoa CNTT</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        Vừa thuyết trình xong môn Kỹ năng mềm, nhẹ cả người. Nhóm 3 đi ăn lẩu thôi!!! 🍲🔥
+                    </div>
+                    <div class="post-actions">
+                        <div class="action-btn like-btn">👍 Thích</div>
+                        <div class="action-btn comment-btn">💬 Bình luận</div>
+                        <div class="action-btn share-btn">🔗 Chia sẻ</div>
+                    </div>
+                    <!-- Khu vực bình luận -->
+                    <div class="comment-section">
+                        <div class="comments-list"></div>
+                        <div class="comment-input-area">
+                            <input type="text" class="comment-input" placeholder="Viết bình luận...">
+                            <button class="submit-comment">Gửi</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <aside class="right-panel">
+            <div class="friend-list">
+                <h4>Người liên hệ <span class="online-dot"></span></h4>
+                <div class="friend">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Tuan" alt="Avatar">
+                    <span>Lê Anh Tuấn</span>
+                </div>
+                <div class="friend">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Hoa" alt="Avatar">
+                    <span>Phạm Thị Hoa</span>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <script>
+        // Hàm Đăng Bài Mới
+        function createPost() {
+            const inputField = document.getElementById('postInput');
+            const content = inputField.value.trim();
+
+            if (content === "") {
+                alert("Vui lòng nhập nội dung trước khi đăng!");
+                return;
+            }
+
+            const newPostHTML = `
+                <div class="post">
+                    <div class="post-header">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student" alt="Avatar">
+                        <div>
+                            <div class="post-author">Sinh Viên (Bạn)</div>
+                            <div class="post-time">Vừa xong • 🌍</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        ${content}
+                    </div>
+                    <div class="post-actions">
+                        <div class="action-btn like-btn">👍 Thích</div>
+                        <div class="action-btn comment-btn">💬 Bình luận</div>
+                        <div class="action-btn share-btn">🔗 Chia sẻ</div>
+                    </div>
+                    <div class="comment-section">
+                        <div class="comments-list"></div>
+                        <div class="comment-input-area">
+                            <input type="text" class="comment-input" placeholder="Viết bình luận...">
+                            <button class="submit-comment">Gửi</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const postsContainer = document.getElementById('postsContainer');
+            postsContainer.insertAdjacentHTML('afterbegin', newPostHTML);
+            inputField.value = "";
+        }
+
+        // Ủy quyền sự kiện (Event Delegation) cho toàn bộ Bảng tin
+        // Bằng cách này, các bài viết mới đăng cũng sẽ có chức năng của các nút
+        document.getElementById('postsContainer').addEventListener('click', function(e) {
+            
+            // 1. Chức năng Nút Thích
+            if (e.target.closest('.like-btn')) {
+                const btn = e.target.closest('.like-btn');
+                if (btn.style.color === 'rgb(24, 119, 242)') {
+                    btn.style.color = '#65676b';
+                    btn.innerHTML = '👍 Thích';
+                } else {
+                    btn.style.color = '#1877f2';
+                    btn.innerHTML = '💙 Đã thích';
+                }
+            }
+
+            // 2. Chức năng Nút Bình Luận (Mở/Đóng khu vực bình luận)
+            if (e.target.closest('.comment-btn')) {
+                const post = e.target.closest('.post');
+                const commentSection = post.querySelector('.comment-section');
+                if (commentSection.style.display === 'block') {
+                    commentSection.style.display = 'none';
+                } else {
+                    commentSection.style.display = 'block';
+                    // Tự động focus vào ô nhập
+                    post.querySelector('.comment-input').focus();
+                }
+            }
+
+            // 3. Chức năng Nút Chia Sẻ
+            if (e.target.closest('.share-btn')) {
+                alert("Đã sao chép liên kết! Bạn có thể gửi cho bạn bè.");
+            }
+
+            // 4. Chức năng Gửi Bình Luận
+            if (e.target.closest('.submit-comment')) {
+                const post = e.target.closest('.post');
+                const input = post.querySelector('.comment-input');
+                const commentText = input.value.trim();
+
+                if (commentText !== "") {
+                    const commentsList = post.querySelector('.comments-list');
+                    const newComment = document.createElement('div');
+                    newComment.className = 'comment-item';
+                    newComment.innerHTML = `<strong>Bạn:</strong> ${commentText}`;
+                    
+                    commentsList.appendChild(newComment);
+                    input.value = ""; // Xóa ô nhập sau khi gửi
+                }
+            }
+        });
+
+        // Hỗ trợ ấn phím Enter để gửi bình luận
+        document.getElementById('postsContainer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.target.classList.contains('comment-input')) {
+                // Tái sử dụng nút Gửi bằng cách mô phỏng cú click
+                e.target.nextElementSibling.click();
+            }
+        });
+    </script>
+</body>
+</html>
