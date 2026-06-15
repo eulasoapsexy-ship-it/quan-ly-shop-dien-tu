@@ -2,10 +2,10 @@
   <img src="https://capsule-render.vercel.app/api?type=waving&color=ff9000&height=200&section=header&text=Dev%20Hub&fontSize=80&fontAlignY=40&desc=Welcome%20to%20my%20Profile&descAlignY=60&descAlign=50" />
 </div>
 
-<h1 align="center">Chào mừng đến với "Trạm" của tôi 🟧⬛</h1>
+<h1 align="center">Chào mừng đến với tầng hầm của tôi 🟧⬛</h1>
 
 <p align="center">
-  <i>Đam mê gõ phím, thích mày mò Fullstack Web và Mạch điện tử.</i>
+  <i>Đam mê trẻ em, yêu bé trai.</i>
 </p>
 
 ---
